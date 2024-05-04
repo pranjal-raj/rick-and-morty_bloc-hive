@@ -70,7 +70,7 @@ class _CharacterCardState extends State<CharacterCard> {
                               child: Text(
                                 widget.name,
                                 style: const TextStyle(
-                                  color: Color.fromARGB(255, 39, 2, 139),
+                                  color: Color.fromARGB(150, 39, 2, 139),
                                   fontSize: 30,
                                   fontFamily: 'Mouldy',
                                 ),

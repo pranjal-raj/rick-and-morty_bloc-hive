@@ -30,6 +30,7 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/fonts/
+    - assets/images/exception_image.jpg
   fonts:
   - family: Mouldy  # Replace 'MyFont' with your actual font family name
     fonts:

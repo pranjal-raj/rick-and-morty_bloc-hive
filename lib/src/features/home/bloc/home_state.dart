@@ -4,7 +4,7 @@ part of 'home_bloc.dart';
 sealed class HomeState {}
 sealed class HomeActionState extends HomeState {}
 
-final class HomeInitial extends HomeState {}
+final class HomeInitial extends HomeActionState {}
 
 //APIStates
 class LoadingState extends HomeState {
@@ -16,7 +16,12 @@ class SuccessState extends HomeState{
   SuccessState({required this.charactersList});
 }
 
-class FailureState extends HomeState {}
+class FailureState extends HomeState {
+  final String errorMessage;
+
+  FailureState({required this.errorMessage});
+
+}
 
 
 //Navigate

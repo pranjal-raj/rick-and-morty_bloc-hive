@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_bloc/src/features/common/data/character_model.dart';
-import 'package:movie_bloc/src/features/common/network/api_service.dart';
-import 'package:movie_bloc/src/features/common/repository/rick_and_morty_repository_impl.dart';
 import 'package:movie_bloc/src/features/common/ui/character_card.dart';
 import 'package:movie_bloc/src/features/home/bloc/home_bloc.dart';
 
@@ -13,23 +11,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<CharacterModel> response = [];
-  CharacterModel character = CharacterModel(
-      id: 2,
-      name: "name",
-      status: 'status',
-      species: 'species',
-      type: 'type',
-      gender: 'gender',
-      image: 'image',
-      url: 'url');
+  final homeBloc = HomeBloc();
+
   @override
   void initState() {
-    getAllCharacters();
+    homeBloc.add(HomeInitEvent());
     super.initState();
   }
 
-  final homeBloc = HomeBloc();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +28,7 @@ class _HomeState extends State<Home> {
        listenWhen :(previous, current) {
         return current is HomeActionState;
        },
-      // buildWhen: (previous, current) {
-        
-      // },
+       buildWhen: (previous, current) => current is !HomeActionState,
       bloc: homeBloc,
       listener: (context, state) {
         switch(state)
@@ -48,9 +36,7 @@ class _HomeState extends State<Home> {
           case HomeNavigateToFavouritesPageActionState() :
           {
             Navigator.pushNamed(context, '/favourites');
-          }
-          case HomeInitial():
-          
+          }        
           default:
           print("Default");
         }
@@ -76,32 +62,86 @@ class _HomeState extends State<Home> {
                           const Icon(Icons.favorite, color: Colors.redAccent)))
             ],
           ),
-          body: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: ListView.builder(
-              itemCount: response.length,
-              itemBuilder: (context, index) {
-                final character = response[index];
-                return CharacterCard(
-                  name: character.name,
-                  species: character.species,
-                  image: character.image,
-                );
-              },
+          body: 
+          switch(state.runtimeType)
+          {
+            const (LoadingState)=>
+            const Center(
+             child : CircularProgressIndicator(color: Colors.black,),
             ),
-          ),
+
+            const (SuccessState)=>
+            HomeListViewUILoaded(response: (state as SuccessState).charactersList ),
+
+            const (FailureState)=>
+            const HomeUIFailure(),
+
+          _=>
+          Center(child: Text(state.runtimeType.toString()))
+          }
         );
       },
     );
   }
+}
 
-  void getAllCharacters() async {
-    final apiService = ApiService();
-    final list =
-        await RickAndMortyRepositoryImpl(apiService).getAllCharacters();
-    setState(() {
-      response = list;
-      character = response[5];
-    });
+class HomeUIFailure extends StatelessWidget {
+  const HomeUIFailure({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color : Color.fromARGB(255, 14, 14, 14),
+      child : Stack(alignment: Alignment.center,
+      children: [
+        Image.asset("assets/images/exception_image.jpg"),
+        const Center(
+          child: 
+          Column(
+            children: [
+              SizedBox(height: 200),
+              Text(
+               "Err! Can't Load Characters ",
+                style: 
+                TextStyle(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontSize: 30,
+                  fontFamily: 'Mouldy',
+                  ),),
+                ],
+                ),
+                )
+      ],)
+    );
+  }
+}
+
+class HomeListViewUILoaded extends StatelessWidget {
+  const HomeListViewUILoaded({
+    super.key,
+    required this.response,
+  });
+
+  final List<CharacterModel> response;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+    padding: const EdgeInsets.all(20.0),
+    child:   
+     ListView.builder(
+      itemCount: response.length,
+      itemBuilder: (context, index) {
+        final character = response[index];
+        return CharacterCard(
+          name: character.name,
+          species: character.species,
+          image: character.image,
+        );
+      },
+    ),
+              );
   }
 }
