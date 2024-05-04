@@ -1,0 +1,36 @@
+name: movie_bloc
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc:
+  bloc : 
+  rxdart :
+  http:
+  dio: ^5.4.3+1
+  logging:
+
+  
+  json_serializable: ^6.8.0
+  build_runner: ^2.4.9
+  meta: ^1.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets: 
+    - assets/fonts/
+  fonts:
+  - family: Mouldy  # Replace 'MyFont' with your actual font family name
+    fonts:
+      - asset: assets/fonts/mould_cheese.ttf
