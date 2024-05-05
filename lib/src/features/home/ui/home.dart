@@ -36,7 +36,8 @@ class _HomeState extends State<Home> {
           case HomeNavigateToFavouritesPageActionState() :
           {
             Navigator.pushNamed(context, '/favourites');
-          }        
+          } 
+ 
           default:
           print("Default");
         }
@@ -71,7 +72,12 @@ class _HomeState extends State<Home> {
             ),
 
             const (SuccessState)=>
-            HomeListViewUILoaded(response: (state as SuccessState).charactersList ),
+            HomeListViewUILoaded(response: (state as SuccessState).charactersList,  bloc: homeBloc ),
+
+            const (HomeCharacterListUpdated) =>
+             HomeListViewUILoaded(
+                  response: (state as HomeCharacterListUpdated).charactersList,
+                  bloc: homeBloc),
 
             const (FailureState)=>
             const HomeUIFailure(),
@@ -93,37 +99,38 @@ class HomeUIFailure extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color : Color.fromARGB(255, 14, 14, 14),
-      child : Stack(alignment: Alignment.center,
-      children: [
-        Image.asset("assets/images/exception_image.jpg"),
-        const Center(
-          child: 
-          Column(
-            children: [
-              SizedBox(height: 200),
-              Text(
-               "Err! Can't Load Characters ",
-                style: 
-                TextStyle(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  fontSize: 30,
-                  fontFamily: 'Mouldy',
-                  ),),
+        color: Color.fromARGB(255, 14, 14, 14),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset("assets/images/exception_image.jpg"),
+            const Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 200),
+                  Text(
+                    "Err! Can't Load Characters ",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 30,
+                      fontFamily: 'Mouldy',
+                    ),
+                  ),
                 ],
-                ),
-                )
-      ],)
-    );
+              ),
+            )
+          ],
+        ));
   }
 }
 
 class HomeListViewUILoaded extends StatelessWidget {
   const HomeListViewUILoaded({
     super.key,
-    required this.response,
+    required this.response, required this.bloc,
   });
 
+  final HomeBloc bloc;
   final List<CharacterModel> response;
 
   @override
@@ -136,9 +143,12 @@ class HomeListViewUILoaded extends StatelessWidget {
       itemBuilder: (context, index) {
         final character = response[index];
         return CharacterCard(
-          name: character.name,
-          species: character.species,
-          image: character.image,
+          character: character,
+          bloc: bloc,
+          onPressed: (){
+            print(character.name);
+            bloc.add(HomeCharacterFavouriteClickedEvent(characterList: response, index: index));
+          },
         );
       },
     ),

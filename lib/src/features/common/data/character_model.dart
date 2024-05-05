@@ -14,8 +14,9 @@ class CharacterModel {
     final List<String>? episode;
     final String url;
     final String? created;
+    bool liked;
 
-  CharacterModel({required this.id, required this.name, required this.status, required this.species, required this.type, required this.gender, this.origin, this.location, required this.image, this.episode, required this.url, this.created});
+  CharacterModel({required this.id, required this.name, required this.status, required this.species, required this.type, required this.gender, this.origin, this.location, required this.image, this.episode, required this.url, this.created, this.liked =false});
 
   factory CharacterModel.fromJson(Map<String, dynamic> json)
   {
@@ -29,6 +30,12 @@ class CharacterModel {
     image: json['image'],
     url: json['url']
     );
+  }
+
+  Future<void> updateLiked()
+  {
+    liked = ! liked;
+    return Future(() => null) ;
   }
 
 

@@ -27,3 +27,11 @@ class FailureState extends HomeState {
 //Navigate
 class HomeNavigateToFavouritesPageActionState extends HomeActionState{}
 
+
+//DataStates
+class HomeCharacterListUpdated extends HomeState{
+  final List<CharacterModel> charactersList;
+
+  HomeCharacterListUpdated({required this.charactersList});
+}
+

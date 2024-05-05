@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+
+import '../../home/bloc/home_bloc.dart';
+import '../data/character_model.dart';
 
 class CharacterCard extends StatefulWidget {
-  final String name;
-  final String species;
-  final String image;
-  bool liked = false;
-  CharacterCard(
+  final CharacterModel character;
+  final Bloc bloc;
+
+  final void Function()? onPressed;
+  const CharacterCard(
       {super.key,
-      required this.name,
-      required this.species,
-      required this.image,
-      this.liked = false});
+      required this.character, required this.bloc, this.onPressed, 
+            });
 
   @override
   State<CharacterCard> createState() => _CharacterCardState();
@@ -51,7 +50,7 @@ class _CharacterCardState extends State<CharacterCard> {
                     child: ClipRRect(
                   borderRadius: const BorderRadiusDirectional.vertical(
                       top: Radius.circular(20)),
-                  child: Image.network(widget.image, fit: BoxFit.fitWidth),
+                  child: Image.network(widget.character.image, fit: BoxFit.fitWidth),
                 )),
               ),
               Flexible(
@@ -68,7 +67,7 @@ class _CharacterCardState extends State<CharacterCard> {
                           children: [
                             FittedBox(
                               child: Text(
-                                widget.name,
+                                widget.character.name,
                                 style: const TextStyle(
                                   color: Color.fromARGB(150, 39, 2, 139),
                                   fontSize: 30,
@@ -76,7 +75,7 @@ class _CharacterCardState extends State<CharacterCard> {
                                 ),
                               ),
                             ),
-                            Text(widget.species,
+                            Text(widget.character.species,
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 97, 97, 97),
                                   fontSize: 20,
@@ -87,12 +86,8 @@ class _CharacterCardState extends State<CharacterCard> {
                       ),
                       IconButton(
                         iconSize: 30,
-                        onPressed: () {
-                          setState(() {
-                            widget.liked = !widget.liked;
-                          });
-                        },
-                        icon: toggleLiked(),
+                        onPressed: widget.onPressed,
+                        icon: toggleLiked(widget.character.liked),
                       )
                     ],
                   ),
@@ -103,8 +98,8 @@ class _CharacterCardState extends State<CharacterCard> {
     );
   }
 
-  Icon toggleLiked() {
-    if (widget.liked) {
+  Icon toggleLiked(bool liked) {
+    if (liked) {
       return const Icon(
         Icons.favorite_rounded,
         color: Colors.redAccent,
