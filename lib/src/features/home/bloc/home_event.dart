@@ -15,3 +15,11 @@ class HomeCharacterFavouriteClickedEvent extends HomeEvent {
 }
 
 class HomeFavouriteNavigateEvent extends HomeEvent {}
+
+class HomeFavouritesListChangedEvent extends HomeEvent {}
+
+class HomeLoadMoreClickedEvent extends HomeEvent{
+  final List<CharacterModel> characterList;
+
+  HomeLoadMoreClickedEvent({required this.characterList});
+}

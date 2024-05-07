@@ -7,22 +7,21 @@ sealed class FavouriteActionState {}
 
 final class FavouritesInitial extends FavouritesState {}
 
-class LoadingState extends FavouritesState {}
+class FavouritesLoadingState extends FavouritesState {}
 
-class SuccessState extends FavouritesState {
+class FavouritesSuccessState extends FavouritesState {
   final List<CharacterModel> favouriteCharactersList;
 
-  SuccessState({required this.favouriteCharactersList});
+  FavouritesSuccessState({required this.favouriteCharactersList});
 }
 
-class SuccessEmptyState extends FavouritesState {}
+class FavouritesSuccessEmptyState extends FavouritesState {}
 
-class FailureState extends FavouritesState {
+class FavouritesFailureState extends FavouritesState {
   final String errorMessage;
 
-  FailureState({required this.errorMessage});
+  FavouritesFailureState({required this.errorMessage});
 }
-
 
 class FavouritesCharacterListUpdated extends FavouritesState {
   final List<CharacterModel> charactersList;

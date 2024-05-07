@@ -8,11 +8,13 @@ class CharacterCard extends StatefulWidget {
   final CharacterModel character;
   final Bloc bloc;
 
-  final void Function()? onPressed;
-  const CharacterCard(
-      {super.key,
-      required this.character, required this.bloc, this.onPressed, 
-            });
+  final void Function()? onLikePressed;
+  const CharacterCard({
+    super.key,
+    required this.character,
+    required this.bloc,
+    this.onLikePressed,
+  });
 
   @override
   State<CharacterCard> createState() => _CharacterCardState();
@@ -40,8 +42,7 @@ class _CharacterCardState extends State<CharacterCard> {
                     offset: const Offset(0, 5),
                     blurRadius: 5)
               ]),
-          child: 
-          Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Flexible(
@@ -50,12 +51,14 @@ class _CharacterCardState extends State<CharacterCard> {
                     child: ClipRRect(
                   borderRadius: const BorderRadiusDirectional.vertical(
                       top: Radius.circular(20)),
-                  child: Image.network(widget.character.image, fit: BoxFit.fitWidth),
+                  child: Image.network(widget.character.image,
+                      fit: BoxFit.fitWidth),
                 )),
               ),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +89,7 @@ class _CharacterCardState extends State<CharacterCard> {
                       ),
                       IconButton(
                         iconSize: 30,
-                        onPressed: widget.onPressed,
+                        onPressed: widget.onLikePressed,
                         icon: toggleLiked(widget.character.liked),
                       )
                     ],

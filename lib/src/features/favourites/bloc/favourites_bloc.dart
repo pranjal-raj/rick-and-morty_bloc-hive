@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+
 import 'package:movie_bloc/src/features/common/data/character_model.dart';
 import 'package:movie_bloc/src/features/common/network/api_service.dart';
 import 'package:movie_bloc/src/features/common/repository/rick_and_morty_repository_impl.dart';
+import 'package:movie_bloc/src/features/home/bloc/home_bloc.dart';
+
 
 part 'favourites_event.dart';
 part 'favourites_state.dart';
@@ -19,16 +22,16 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
   }
 
   FutureOr<void> favouritesInitEventHandler(FavouritesInitEvent event, Emitter<FavouritesState> emit) async {
-    emit(LoadingState());
+    emit(FavouritesLoadingState());
     try {
       final favouriteCharactersList = await repository.getAllFavourites();
       if (favouriteCharactersList.isEmpty) {
-        emit(SuccessEmptyState());
+        emit(FavouritesSuccessEmptyState());
       } else {
-        emit(SuccessState(favouriteCharactersList: favouriteCharactersList));
+        emit(FavouritesSuccessState(favouriteCharactersList: favouriteCharactersList));
       }
     } on Exception catch (e) {
-      emit(FailureState(errorMessage: e.toString()));
+      emit(FavouritesFailureState(errorMessage: e.toString()));
     }
   }
 
@@ -44,9 +47,17 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
       }
 
       final favouriteCharactersList = await repository.getAllFavourites();
-      emit(SuccessState(favouriteCharactersList: favouriteCharactersList ));
+      if(favouriteCharactersList.isNotEmpty)
+      {
+        emit(FavouritesSuccessState(favouriteCharactersList: favouriteCharactersList));
+      }
+      else{
+        emit(FavouritesSuccessEmptyState());
+      }
+      event.bloc.add(HomeFavouritesListChangedEvent());
+
     } on Exception catch (e) {
-      print("failure to add : ${e.toString()}");
+      debugPrint("Failure to add : ${e.toString()}");
     }
   }
 }

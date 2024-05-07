@@ -8,7 +8,7 @@ class FavouritesInitEvent extends FavouritesEvent {}
 class FavouritesCharacterFavouriteClickedEvent extends FavouritesEvent {
   final List<CharacterModel> characterList;
   final int index;
-
-  FavouritesCharacterFavouriteClickedEvent(
-      {required this.index, required this.characterList});
+  final HomeBloc bloc;
+  
+  FavouritesCharacterFavouriteClickedEvent({required this.index, required this.characterList, required this.bloc});
 }

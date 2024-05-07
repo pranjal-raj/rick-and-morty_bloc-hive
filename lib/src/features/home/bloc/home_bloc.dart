@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
-import 'package:movie_bloc/src/features/common/data/character_model.dart';
-import 'package:movie_bloc/src/features/common/data/favourited_characters.dart';
-import 'package:movie_bloc/src/features/common/repository/rick_and_morty_repository_impl.dart';
-
+import '../../common/data/character_model.dart';
+import '../../common/repository/rick_and_morty_repository_impl.dart';
 import '../../common/network/api_service.dart';
 
 part 'home_event.dart';
@@ -16,23 +13,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final repository = RickAndMortyRepositoryImpl(ApiService());
   HomeBloc() : super(HomeInitial()) {
     on<HomeInitEvent>(homeInitEventHandler);
-
     on<HomeFavouriteNavigateEvent>(homeFavouriteNavigateEventHandler);
-
     on<HomeCharacterFavouriteClickedEvent>(homeCharacterFavouriteClickedEventHandler);
+    on<HomeFavouritesListChangedEvent>(homeFavouritesListChangedEventHandler);
   }
 
   FutureOr<void> homeFavouriteNavigateEventHandler(
       HomeFavouriteNavigateEvent event, Emitter<HomeState> emit) {
-    print("Navigate Clicked");
     emit(HomeNavigateToFavouritesPageActionState());
   }
 
   FutureOr<void> homeInitEventHandler(
-      HomeInitEvent event, Emitter<HomeState> emit) async {
-    print("handler called");
+    HomeInitEvent event, Emitter<HomeState> emit) async {
     emit(LoadingState());
-
     try {
       final response = await repository.getAllCharacters();
       emit(SuccessState(charactersList: response));
@@ -50,10 +43,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         repository.updateCharacterLikedStatus(event.characterList[event.index]);
         repository.removeFromfavourites(event.characterList[event.index]);
       }
-      print("Favourites : ${favourites.length}");
-      emit(HomeCharacterListUpdated(charactersList: event.characterList));
+      emit(SuccessState(charactersList: event.characterList));
     } on Exception catch (e){
-      print("failure to add : ${e.toString()}");
+      debugPrint("Failure to add : ${e.toString()}");
     }
+  }
+
+  FutureOr<void> homeFavouritesListChangedEventHandler(HomeFavouritesListChangedEvent event, Emitter<HomeState> emit) {
+    emit(HomeFavouritesListChangedState());
   }
 }
