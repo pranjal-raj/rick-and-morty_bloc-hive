@@ -1,4 +1,4 @@
-import '../data/character_model.dart';
+import '../data/models/character_model.dart';
 
 abstract class RickAndMortyRepository {
   Future<List<CharacterModel>> getAllCharacters();
@@ -10,4 +10,6 @@ abstract class RickAndMortyRepository {
   Future<List<CharacterModel>> removeFromfavourites(CharacterModel characterModel);
 
   Future<List<CharacterModel>> getAllFavourites();
+
+  Future<List<CharacterModel>> getPagedCharacters(int page);
 }

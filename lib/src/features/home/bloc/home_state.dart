@@ -30,3 +30,10 @@ class HomeNavigateToFavouritesPageActionState extends HomeActionState{}
 
 class HomeFavouritesListChangedState extends HomeActionState{}
 
+class HomeNewPagesAddedState extends HomeActionState {
+  final List<CharacterModel> characterList;
+  final int pageKey;
+
+  HomeNewPagesAddedState({required this.pageKey, required this.characterList}); 
+}
+

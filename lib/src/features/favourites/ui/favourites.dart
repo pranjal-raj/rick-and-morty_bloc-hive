@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_bloc/src/features/common/ui/common_widgets.dart';
 import 'package:movie_bloc/src/features/favourites/bloc/favourites_bloc.dart';
-import '../../common/data/character_model.dart';
+import '../../common/data/models/character_model.dart';
 import '../../common/ui/character_card.dart';
 import '../../home/bloc/home_bloc.dart';
 

@@ -23,3 +23,8 @@ class HomeLoadMoreClickedEvent extends HomeEvent{
 
   HomeLoadMoreClickedEvent({required this.characterList});
 }
+
+class HomeEndOfCharacterListReachedEvent extends HomeEvent {
+  final int page;
+  HomeEndOfCharacterListReachedEvent({required this.page});
+}

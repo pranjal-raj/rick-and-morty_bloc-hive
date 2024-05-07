@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import 'package:movie_bloc/src/features/common/data/character_model.dart';
+import 'package:movie_bloc/src/features/common/data/models/character_model.dart';
 import 'package:movie_bloc/src/features/common/network/api_service.dart';
 import 'package:movie_bloc/src/features/common/repository/rick_and_morty_repository_impl.dart';
 import 'package:movie_bloc/src/features/home/bloc/home_bloc.dart';

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:movie_bloc/src/features/common/data/character_model.dart';
-import 'package:movie_bloc/src/features/common/ui/character_card.dart';
+import 'package:movie_bloc/src/features/common/data/models/character_model.dart';
 import 'package:movie_bloc/src/features/home/bloc/home_bloc.dart';
-
 import '../../common/ui/common_widgets.dart';
+import 'home_page_list.dart';
 
 class Home extends StatefulWidget {
   final HomeBloc homeBloc;
-
 
   const Home({super.key, required this.homeBloc});
   @override
@@ -17,9 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const pageSize = 20; 
-  final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0);
+
   @override
   void initState() {
     widget.homeBloc.add(HomeInitEvent());
@@ -47,9 +42,9 @@ class _HomeState extends State<Home> {
             }
 
           default:
-            debugPrint("Default");
         }
       },
+
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
@@ -71,16 +66,19 @@ class _HomeState extends State<Home> {
                         icon: const Icon(Icons.favorite, color: Colors.white)))
               ],
             ),
+
+
+
             body: switch (state.runtimeType) {
-              const (LoadingState) => const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.black,
-                  ),
-                ),
-              const (SuccessState) => HomeListViewUILoaded(
-                  response: (state as SuccessState).charactersList,
-                  bloc: widget.homeBloc),
+              const (LoadingState) => const LoadingScreen(),
+
+
+              const (SuccessState) => HomeListViewUILoaded(response: (state as SuccessState).charactersList, bloc: widget.homeBloc),
+
+
               const (FailureState) => const HomeUIFailure(),
+
+
               _ => Center(child: Text(state.runtimeType.toString()))
             });
       },
@@ -112,23 +110,9 @@ class HomeListViewUILoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20.0),
-      child: ListView.builder(
-        itemCount: response.length,
-        itemBuilder: (context, index) {
-          final character = response[index];
-          return CharacterCard(
-            character: character,
-            bloc: bloc,
-            onLikePressed: () {
-              debugPrint(character.name);
-              bloc.add(HomeCharacterFavouriteClickedEvent(
-                  characterList: response, index: index));
-            },
-          );
-        },
-      ),
-      
-    );
+        padding: const EdgeInsets.all(20.0), 
+        child: PagedList(bloc: bloc)
+        );
   }
 }
+

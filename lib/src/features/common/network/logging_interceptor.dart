@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 
-final _logger = Logger("API_Logging");
+//USLESS : NEED TO CHANGE TO PRETTY INSPECTOR DIO EXTENSION
+
+//final _logger = Logger("API_Logging");
 class LoggingInterceptor extends InterceptorsWrapper {
   final level =
       Level.INFO; // Customize logging level (INFO, WARNING, ERROR, etc.)
@@ -35,11 +38,6 @@ class LoggingInterceptor extends InterceptorsWrapper {
   }
 
   void _log(Level level, String message) {
-    // Implement your logging logic here:
-    // - Use `print` for basic logging
-    // - Use a logging package (like `logging` or `logger`) for structured logging & filtering
-    print('[$level] - $message');
-    
-    _logger.fine('[$level] - $message');
+    debugPrint('[$level] - $message');
   }
 }

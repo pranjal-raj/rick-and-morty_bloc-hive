@@ -1,5 +1,5 @@
-import 'package:movie_bloc/src/features/common/data/character_model.dart';
-import 'package:movie_bloc/src/features/common/data/favourited_characters.dart';
+import 'package:movie_bloc/src/features/common/data/models/character_model.dart';
+import 'package:movie_bloc/src/features/common/data/dataSource/favourited_characters.dart';
 import 'package:movie_bloc/src/features/common/network/api_service.dart';
 import 'package:movie_bloc/src/features/common/repository/rick_and_morty_repository.dart';
 
@@ -19,7 +19,6 @@ class RickAndMortyRepositoryImpl extends RickAndMortyRepository {
 
   @override
   Future<void> updateCharacterLikedStatus(CharacterModel character) async {
-    final int id = character.id;
     return await character.updateLiked();
   }
 
@@ -34,5 +33,15 @@ class RickAndMortyRepositoryImpl extends RickAndMortyRepository {
   Future<List<CharacterModel>> removeFromfavourites(CharacterModel characterModel) async {
     favourites.remove(characterModel);
     return Future.value(favourites);
+  }
+  
+  @override
+  Future<List<CharacterModel>> getPagedCharacters(int page) async {
+    try{
+      return _apiService.getPagedCharacters(page);
+      } on Exception catch(e) {
+        throw Exception("Exception Occured : ${e.toString()}");
+      }
+
   }
 }
