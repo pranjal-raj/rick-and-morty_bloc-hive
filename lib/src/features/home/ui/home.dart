@@ -17,9 +17,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const pageSize = 20; 
-  final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0);
   @override
   void initState() {
     widget.homeBloc.add(HomeInitEvent());
