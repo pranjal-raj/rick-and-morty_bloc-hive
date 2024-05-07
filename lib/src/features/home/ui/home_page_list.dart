@@ -36,7 +36,6 @@ class _PagedListState extends State<PagedList> {
         switch (state.runtimeType) {
           case (const (HomeNewPagesAddedState)):
             {
-              debugPrint("yo");
               _updateList((state as HomeNewPagesAddedState).characterList,
                   state.pageKey);
             }

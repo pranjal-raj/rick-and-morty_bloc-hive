@@ -31,10 +31,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(LoadingState());
     try {
       final response = await repository.getAllCharacters();
-      emit(SuccessState(charactersList: response));
+      final characterListPage = await repository.getPagedCharacters(1);
+      emit(SuccessState(charactersList: characterListPage));
     } on Exception catch (e) {
       debugPrint("Error:  ${e.toString()}");
-      emit(FailureState(errorMessage: e.toString()));
+     // emit(FailureState(errorMessage: e.toString()));
     }
   }
 
@@ -65,7 +66,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final characterListPage = await repository.getPagedCharacters(event.page);
       emit(HomeNewPagesAddedState(characterList: characterListPage, pageKey: event.page));
     } on Exception catch (e) {
-      print("Nigga:  ${e.toString()}");
       emit(FailureState(errorMessage: e.toString()));
     }
   }

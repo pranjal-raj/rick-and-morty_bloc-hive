@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
 import 'package:movie_bloc/src/features/common/constants.dart';
 import 'package:movie_bloc/src/features/common/data/models/character_model.dart';
-import 'package:movie_bloc/src/features/common/network/logging_interceptor.dart';
+
+import 'logging_interceptor.dart';
 
 final _logger = Logger("API_SERVICE");
 class ApiService {
@@ -31,7 +32,6 @@ class ApiService {
       final result = response.data['results'] as List;
       final List<CharacterModel> listOfCharacters =
           result.map((e) => CharacterModel.fromJson(e)).toList();
-      print(listOfCharacters.first.image);
       return listOfCharacters;
     }
     on Exception catch(exp){

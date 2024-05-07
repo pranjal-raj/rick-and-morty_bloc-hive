@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_bloc/src/features/common/data/models/character_model.dart';
+import 'package:movie_bloc/src/features/common/data/models/response.dart';
+import 'package:movie_bloc/src/features/common/network/api_service.dart';
+import 'package:movie_bloc/src/features/common/ui/character_card.dart';
 import 'package:movie_bloc/src/features/home/bloc/home_bloc.dart';
+
 import '../../common/ui/common_widgets.dart';
 import 'home_page_list.dart';
 
@@ -68,23 +73,20 @@ class _HomeState extends State<Home> {
             ),
 
 
-
+            
             body: switch (state.runtimeType) {
               const (LoadingState) => const LoadingScreen(),
-
-
-              const (SuccessState) => HomeListViewUILoaded(response: (state as SuccessState).charactersList, bloc: widget.homeBloc),
-
-
+              const (SuccessState) => HomeListViewUILoaded(
+                  response: (state as SuccessState).charactersList,
+                  bloc: widget.homeBloc),
               const (FailureState) => const HomeUIFailure(),
-
-
               _ => Center(child: Text(state.runtimeType.toString()))
             });
       },
     );
   }
 }
+
 
 class HomeUIFailure extends StatelessWidget {
   const HomeUIFailure({
@@ -93,9 +95,32 @@ class HomeUIFailure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LoadingScreen();
+    return Container(
+        color: const Color.fromARGB(255, 14, 14, 14),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset("assets/images/exception_image.jpg"),
+            const Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 200),
+                  Text(
+                    "Err! Can't Load Characters ",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 30,
+                      fontFamily: 'Mouldy',
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
   }
 }
+
 
 class HomeListViewUILoaded extends StatelessWidget {
   const HomeListViewUILoaded({

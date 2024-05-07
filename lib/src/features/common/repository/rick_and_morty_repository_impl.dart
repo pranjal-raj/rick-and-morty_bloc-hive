@@ -1,5 +1,5 @@
 import 'package:movie_bloc/src/features/common/data/models/character_model.dart';
-import 'package:movie_bloc/src/features/common/data/dataSource/favourited_characters.dart';
+import 'package:movie_bloc/src/features/common/data/favourited_characters.dart';
 import 'package:movie_bloc/src/features/common/network/api_service.dart';
 import 'package:movie_bloc/src/features/common/repository/rick_and_morty_repository.dart';
 
