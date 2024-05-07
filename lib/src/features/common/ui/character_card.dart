@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../../home/bloc/home_bloc.dart';
 import '../data/models/character_model.dart';
 
 class CharacterCard extends StatefulWidget {
